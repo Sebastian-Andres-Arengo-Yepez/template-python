@@ -1,5 +1,6 @@
 import os
-from flask import Flask, send_from_directory, render_template, redirect
+from flask import Flask, send_from_directory, render_template, redirect, jsonify, request
+import random 
 
 app = Flask(__name__)
 
@@ -12,6 +13,20 @@ def serve_static(path):
 @app.route('/')
 def home():
    return render_template('index.html')
+
+@app.route('/random', methods=['GET','POST'])
+def get_randint():
+    if request.method == 'GET':
+        return jsonify({
+            'randint': random.randint(1,100),
+            'type': "GET"
+        }), 200
+    elif request.method == 'POST':
+        return jsonify({
+            'randint': random.randint(1,100),
+            'type': "POST"
+        }), 200
+
 
 @app.route('/<path:path>')
 def all_routes(path):
